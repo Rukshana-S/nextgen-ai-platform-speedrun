@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ── Primary SEO ──────────────────────────────────────────── -->
+    <title>NexGen AI — Intelligent Analytics Platform</title>
+    <meta
+      name="description"
+      content="Transform raw data into decisive action with NexGen AI. Enterprise-grade machine learning, real-time insights, and predictive analytics — all in one platform."
+    />
+    <meta name="keywords" content="AI analytics, machine learning, predictive analytics, business intelligence, data platform" />
+    <meta name="author" content="NexGen AI" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://nexgenai.app/" />
+
+    <!-- ── Open Graph ───────────────────────────────────────────── -->
+    <meta property="og:type"         content="website" />
+    <meta property="og:url"          content="https://nexgenai.app/" />
+    <meta property="og:title"        content="NexGen AI — Intelligent Analytics Platform" />
+    <meta
+      property="og:description"
+      content="Transform raw data into decisive action with NexGen AI. Enterprise-grade machine learning, real-time insights, and predictive analytics — all in one platform."
+    />
+    <meta property="og:image"        content="https://nexgenai.app/og-image.png" />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name"    content="NexGen AI" />
+    <meta property="og:locale"       content="en_US" />
+
+    <!-- ── Twitter Card ─────────────────────────────────────────── -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:site"        content="@nexgenai" />
+    <meta name="twitter:creator"     content="@nexgenai" />
+    <meta name="twitter:title"       content="NexGen AI — Intelligent Analytics Platform" />
+    <meta
+      name="twitter:description"
+      content="Transform raw data into decisive action with NexGen AI. Enterprise-grade AI analytics platform."
+    />
+    <meta name="twitter:image"       content="https://nexgenai.app/og-image.png" />
+    <meta name="twitter:image:alt"   content="NexGen AI dashboard preview" />
+
+    <!-- ── Favicon (inline SVG — zero HTTP request) ─────────────── -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23114C5A'/><path d='M8 16C8 11.582 11.582 8 16 8s8 3.582 8 8-3.582 8-8 8' stroke='%23FFC801' stroke-width='2.5' stroke-linecap='round' fill='none'/><circle cx='16' cy='16' r='3' fill='%23FF9932'/></svg>"
+    />
+    <meta name="theme-color" content="#114C5A" />
+
+    <!-- ── Critical font preconnects (must be before stylesheet) ── -->
+    <!--
+      TWO separate preconnects:
+        1. fonts.googleapis.com  — where the CSS lives (no CORS needed)
+        2. fonts.gstatic.com     — where the font files live (needs crossorigin)
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+
+    <!--
+      Non-blocking font load pattern:
+        media="print" makes the browser not render-block on this stylesheet.
+        The onload handler switches it to "all" once it has downloaded,
+        so the swap happens asynchronously — identical to adding it via JS
+        but works without JS too (the noscript fallback covers that case).
+        font-display=swap is appended to the URL so browsers reserve space
+        and swap in the web-font without re-layout.
+    -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+      />
+    </noscript>
+
+    <!--
+      Critical inline styles — covers the skeleton visible before JS hydrates.
+      Prevents FOUC, avoids a separate CSS file round-trip for above-the-fold.
+      Only the bare minimum: body bg, font fallback stack, navbar height reserve.
+    -->
+    <style>
+      /* Font stacks that match the loaded faces so layout doesn't shift */
+      :root {
+        --font-heading: 'JetBrains Mono', 'Courier New', monospace;
+        --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+      }
+      /* Prevent flash of unstyled white during CSS chunk load */
+      html { background: #F1F6F4; }
+      body { margin: 0; background: #F1F6F4; }
+      /* Reserve navbar height so hero content doesn't shift after hydration */
+      #root { min-height: 100vh; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!--
+      Vite injects <script type="module"> here automatically.
+      ES modules are always deferred by the browser spec — no defer attr needed.
+    -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

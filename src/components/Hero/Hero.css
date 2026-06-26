@@ -1,0 +1,540 @@
+/* ================================================================
+   HERO SECTION
+   ================================================================ */
+
+.hero {
+  position: relative;
+  /*
+    Explicit min-height prevents CLS: browser reserves this space
+    even before JS hydrates, so the page doesn't shift down.
+  */
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: calc(var(--navbar-h) + var(--space-12));
+  padding-bottom: var(--space-16);
+  overflow: hidden;
+  /*
+    contain:paint — tells the browser that nothing inside the hero
+    paints outside its own bounding box. This scopes repaint regions
+    during animations to just the hero, not the whole page.
+  */
+  contain: paint;
+}
+
+/* ── Background ─────────────────────────────── */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(17, 76, 90, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 50%, rgba(255, 153, 50, 0.1) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 10% 80%, rgba(255, 200, 1, 0.08) 0%, transparent 50%),
+    linear-gradient(160deg, var(--color-white) 0%, var(--color-mint) 50%, var(--color-white) 100%);
+}
+
+/* Floating orbs */
+.hero__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  animation: hero-orb-float 8s ease-in-out infinite alternate;
+  /*
+    will-change:transform — promotes each orb to its own GPU layer.
+    The browser won't have to repaint the blurred gradient on every
+    animation tick; it just composites the pre-rasterised layer.
+    ONLY apply to elements that are actually animating (here: orbs).
+  */
+  will-change: transform;
+}
+
+.hero__orb--1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(17, 76, 90, 0.15) 0%, transparent 70%);
+  top: -100px;
+  left: -100px;
+  animation-duration: 9s;
+}
+
+.hero__orb--2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 153, 50, 0.12) 0%, transparent 70%);
+  top: 20%;
+  right: -80px;
+  animation-duration: 11s;
+  animation-delay: -3s;
+}
+
+.hero__orb--3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 200, 1, 0.1) 0%, transparent 70%);
+  bottom: 10%;
+  left: 20%;
+  animation-duration: 7s;
+  animation-delay: -6s;
+}
+
+@keyframes hero-orb-float {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(30px, -20px) scale(1.05); }
+}
+
+/* Subtle grid */
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(17, 76, 90, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 76, 90, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+}
+
+/* ── Content ────────────────────────────────── */
+.hero__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+  align-items: center;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .hero__content {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero__content {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--space-20);
+  }
+}
+
+/* ── Left column ────────────────────────────── */
+.hero__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+@media (max-width: 1023px) {
+  .hero__left {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* Eyebrow badge */
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.4rem 1rem;
+  background: rgba(17, 76, 90, 0.08);
+  border: 1px solid rgba(17, 76, 90, 0.15);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-teal);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  animation: hero-fade-up 0.6s ease both;
+}
+
+.hero__eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-orange);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.4); opacity: 0.7; }
+}
+
+/* Heading */
+.hero__heading {
+  font-family: var(--font-heading);
+  /*
+    Explicit font-size via clamp() — identical to before but critically
+    this lets the browser reserve accurate layout space BEFORE the
+    web-font arrives. Avoids the CLS spike from font-swap reflowing.
+    The fallback font stack in :root (see index.html <style>) has the
+    same metrics, so the swap is visually invisible.
+  */
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--color-navy);
+  animation: hero-fade-up 0.7s 0.1s ease both;
+  will-change: opacity, transform;
+}
+
+.hero__heading-accent {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero__heading-accent::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-teal), var(--color-orange));
+  border-radius: var(--radius-full);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: underline-reveal 0.8s 0.9s ease both;
+}
+
+@keyframes underline-reveal {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Subtitle */
+.hero__subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+  max-width: 520px;
+  animation: hero-fade-up 0.7s 0.2s ease both;
+}
+
+/* CTA group */
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  animation: hero-fade-up 0.7s 0.3s ease both;
+}
+
+@media (max-width: 1023px) {
+  .hero__ctas { justify-content: center; }
+}
+
+/* Stats row */
+.hero__stats {
+  display: flex;
+  gap: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  animation: hero-fade-up 0.7s 0.4s ease both;
+}
+
+@media (max-width: 1023px) {
+  .hero__stats { justify-content: center; }
+}
+
+.hero__stat-value {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-navy);
+  line-height: 1;
+}
+
+.hero__stat-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+/* ── Right column — Dashboard card ──────────── */
+.hero__right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: hero-fade-up 0.8s 0.35s ease both;
+}
+
+/* Floating container */
+.hero__dashboard {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* Main card */
+.dashboard-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  box-shadow:
+    0 4px 6px rgba(17, 76, 90, 0.04),
+    0 10px 40px rgba(17, 76, 90, 0.12),
+    0 1px 0 rgba(255,255,255,0.9) inset;
+  animation: card-float 6s ease-in-out infinite;
+  /* Promote card to compositor layer for smooth float animation */
+  will-change: transform;
+}
+
+@keyframes card-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* Card header */
+.dashboard-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
+.dashboard-card__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.dashboard-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-navy);
+}
+
+.dashboard-card__subtitle {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.dashboard-card__live {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.25rem 0.625rem;
+  background: rgba(17, 76, 90, 0.08);
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: var(--fw-semibold);
+  color: var(--color-teal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashboard-card__live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: live-blink 1.5s ease-in-out infinite;
+}
+
+@keyframes live-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* Chart area */
+.dashboard-card__chart {
+  height: 100px;
+  margin-bottom: var(--space-5);
+  position: relative;
+}
+
+.chart-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.chart-path {
+  fill: none;
+  stroke: url(#chartGrad);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: draw-line 1.8s 0.8s ease forwards;
+}
+
+.chart-area {
+  fill: url(#areaGrad);
+  opacity: 0;
+  animation: fade-in-area 0.6s 2.4s ease forwards;
+}
+
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes fade-in-area {
+  to { opacity: 1; }
+}
+
+/* Metric chips */
+.dashboard-card__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.metric-chip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.metric-chip__label {
+  font-size: 0.6rem;
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metric-chip__value {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-navy);
+}
+
+.metric-chip__delta {
+  font-size: 0.6rem;
+  font-weight: var(--fw-medium);
+  color: #16a34a;
+}
+
+.metric-chip__delta--down { color: #dc2626; }
+
+/* AI insight bar */
+.dashboard-card__insight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: linear-gradient(135deg, rgba(17,76,90,0.06) 0%, rgba(255,153,50,0.06) 100%);
+  border: 1px solid rgba(17,76,90,0.1);
+  border-radius: var(--radius-lg);
+}
+
+.dashboard-card__insight-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--color-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-card__insight-text {
+  font-size: var(--text-xs);
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+.dashboard-card__insight-text strong {
+  color: var(--color-teal);
+}
+
+/* Floating pill badges */
+.hero__badge-float {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(17, 76, 90, 0.1);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-navy);
+  white-space: nowrap;
+}
+
+.hero__badge-float--1 {
+  top: -16px;
+  right: -8px;
+  animation: badge-float-1 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero__badge-float--2 {
+  bottom: 20px;
+  left: -20px;
+  animation: badge-float-2 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero__badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.hero__badge-dot--yellow { background: var(--color-yellow); }
+.hero__badge-dot--orange { background: var(--color-orange); }
+
+@keyframes badge-float-1 {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%       { transform: translateY(-8px) rotate(2deg); }
+}
+
+@keyframes badge-float-2 {
+  0%, 100% { transform: translateY(0) rotate(1deg); }
+  50%       { transform: translateY(-6px) rotate(-2deg); }
+}
+
+/* ── Shared fade-up animation ───────────────── */
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Responsive adjustments ─────────────────── */
+@media (max-width: 767px) {
+  .hero__badge-float--2 { display: none; }
+  .hero__stats { gap: var(--space-6); }
+}
+
+@media (max-width: 424px) {
+  .hero__badge-float { display: none; }
+  .dashboard-card__metrics { grid-template-columns: 1fr 1fr; }
+}

@@ -1,0 +1,40 @@
+/* ================================================================
+   GLOBAL STYLES  –  entry point
+   ================================================================
+   NOTE: Google Fonts is loaded via <link> in index.html (non-blocking).
+         The @import here has been deliberately removed to eliminate
+         the render-blocking network waterfall it caused.
+   ================================================================ */
+
+/* 1. Design tokens */
+@import './styles/tokens.css';
+
+/* 2. Reset */
+@import './styles/reset.css';
+
+/* 3. Tailwind layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 4. Utilities */
+@import './styles/utilities.css';
+
+/* ── Scrollbar styling ───────────────────────── */
+::-webkit-scrollbar          { width: 6px; }
+::-webkit-scrollbar-track    { background: var(--color-mint); }
+::-webkit-scrollbar-thumb    { background: var(--color-teal); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-navy); }
+
+/* ── Selection ───────────────────────────────── */
+::selection {
+  background: var(--color-yellow);
+  color: var(--color-navy);
+}
+
+/* ── Focus visible ───────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
