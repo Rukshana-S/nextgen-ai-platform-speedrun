@@ -92,7 +92,7 @@
 }
 
 .trusted__logo-pill:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
   transform: translateY(-2px);
 }
 

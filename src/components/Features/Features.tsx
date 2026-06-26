@@ -136,6 +136,8 @@ const FeatureCard: React.FC<FeatureCardProps> = memo(({
 });
 FeatureCard.displayName = 'FeatureCard';
 
+import Reveal from '../Reveal/Reveal';
+
 /* ================================================================
    MAIN FEATURES SECTION
    ================================================================ */
@@ -164,31 +166,29 @@ const Features: React.FC = memo(() => {
 
       <div className="container features__container">
         {/* Section Header */}
-        <div className="features__header">
-          <div className="features__badge">Platform Capabilities</div>
-          <h2 id="features-section-heading" className="features__title">
-            Intelligent features, built for scale.
-          </h2>
-          <p className="features__subtitle">
-            NextGen AI delivers high-performance analytics, bulletproof security, and seamless collaboration tools straight to your workflow.
-          </p>
-        </div>
+        <Reveal direction="up">
+          <div className="features__header">
+            <div className="features__badge">Platform Capabilities</div>
+            <h2 id="features-section-heading" className="features__title">
+              Intelligent features, built for scale.
+            </h2>
+            <p className="features__subtitle">
+              NextGen AI delivers high-performance analytics, bulletproof security, and seamless collaboration tools straight to your workflow.
+            </p>
+          </div>
+        </Reveal>
 
         {/* Desktop Bento Grid / Mobile Accordion Container */}
-        {/*
-          Using CSS media queries on the same container to switch between Bento Grid and Accordion layout.
-          This ensures the exact same React DOM nodes are used, preserving state
-          perfectly during breakpoint switches without unnecessary remounts or duplicates.
-        */}
         <div className="features__items">
-          {FEATURES.map((item) => (
-            <FeatureCard
-              key={item.id}
-              item={item}
-              isActive={activeId === item.id}
-              isMobile={isMobile}
-              onActivate={() => handleCardActivate(item.id)}
-            />
+          {FEATURES.map((item, index) => (
+            <Reveal key={item.id} delay={index * 80} direction="up" className={item.gridClass}>
+              <FeatureCard
+                item={item}
+                isActive={activeId === item.id}
+                isMobile={isMobile}
+                onActivate={() => handleCardActivate(item.id)}
+              />
+            </Reveal>
           ))}
         </div>
       </div>

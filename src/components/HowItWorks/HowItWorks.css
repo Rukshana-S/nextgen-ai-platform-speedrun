@@ -71,17 +71,9 @@
   flex-direction: column;
   gap: 0;
   position: relative;
-}
-
-/* Vertical connector line on mobile */
-.hiw__steps::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 27px; /* center of the 56px icon circle */
-  width: 2px;
-  background: linear-gradient(180deg, var(--color-teal) 0%, var(--color-yellow) 100%);
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .hiw__step {
@@ -90,15 +82,38 @@
   position: relative;
   padding-bottom: var(--space-12);
   z-index: 1;
-  transition: z-index 0s;
+  transition: transform var(--transition-base), z-index 0s;
+  will-change: transform;
 }
 
 .hiw__step:hover {
   z-index: 10;
+  transform: scale(1.02);
 }
 
 .hiw__step:last-child {
   padding-bottom: 0;
+}
+
+/* Step-by-step vertical connector line on mobile */
+.reveal:not(:last-child) .hiw__step::after,
+.hiw__step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 56px; /* start at bottom of icon circle */
+  bottom: 0;
+  left: 27px; /* center of the 56px icon circle */
+  width: 2px;
+  background: linear-gradient(180deg, var(--color-teal) 0%, var(--color-yellow) 100%);
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.6s 0.3s ease; /* delay so icon reveals first */
+}
+
+/* When the Reveal wrapper gets is-revealed, animate the line */
+.reveal.is-revealed .hiw__step::after,
+.is-revealed .hiw__step:not(:last-child)::after {
+  transform: scaleY(1);
 }
 
 /* Step icon circle */
@@ -117,6 +132,15 @@
   box-shadow: 0 0 0 4px var(--color-white), var(--shadow-md);
 }
 
+.is-revealed .hiw__step-icon {
+  animation: step-icon-entry 0.6s ease forwards;
+}
+
+@keyframes step-icon-entry {
+  0% { transform: rotate(0deg); box-shadow: 0 0 0 4px var(--color-white), var(--shadow-md); }
+  50% { box-shadow: 0 0 0 4px var(--color-white), var(--shadow-lg), var(--shadow-glow); }
+  100% { transform: rotate(8deg); box-shadow: 0 0 0 4px var(--color-white), var(--shadow-md); }
+}
 
 /* Step number badge in corner */
 .hiw__step-num {
@@ -134,6 +158,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+.is-revealed .hiw__step-num {
+  animation: step-badge-entry 0.4s 0.2s ease forwards;
+}
+
+@keyframes step-badge-entry {
+  to { transform: scale(1); opacity: 1; }
 }
 
 /* Step text content */
@@ -148,6 +182,11 @@
   font-weight: var(--fw-bold);
   color: var(--color-navy);
   margin-bottom: var(--space-2);
+  transition: color var(--transition-fast);
+}
+
+.hiw__step:hover .hiw__step-title {
+  color: var(--color-teal);
 }
 
 .hiw__step-desc {
@@ -167,11 +206,6 @@
     gap: 0;
   }
 
-  /* Remove vertical connector line */
-  .hiw__steps::before {
-    display: none;
-  }
-
   .hiw__step {
     flex-direction: column;
     align-items: center;
@@ -182,14 +216,21 @@
   }
 
   /* Horizontal connector lines between steps */
+  .reveal:not(:last-child) .hiw__step::after,
   .hiw__step:not(:last-child)::after {
-    content: '';
-    position: absolute;
     top: 28px; /* half of icon height */
+    bottom: auto;
     left: calc(50% + 28px);
     width: calc(100% - 56px);
     height: 2px;
     background: linear-gradient(90deg, var(--color-teal), var(--color-yellow));
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  .reveal.is-revealed .hiw__step::after,
+  .is-revealed .hiw__step:not(:last-child)::after {
+    transform: scaleX(1);
   }
 
   .hiw__step-icon {

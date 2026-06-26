@@ -118,11 +118,13 @@
 .faq__panel {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--transition-base);
+  transition: grid-template-rows var(--transition-base), visibility var(--transition-base);
+  visibility: hidden;
 }
 
 .faq__item.is-open .faq__panel {
   grid-template-rows: 1fr;
+  visibility: visible;
 }
 
 .faq__panel-inner {
@@ -134,4 +136,12 @@
   font-size: var(--text-base);
   color: var(--color-text);
   line-height: var(--lh-relaxed);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.faq__item.is-open .faq__answer {
+  opacity: 1;
+  transform: translateY(0);
 }

@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { LogoMark, MenuIcon, CloseIcon } from '../../assets/icons';
 import { NAV_LINKS } from '../../data/siteData';
 import { useScrolled, useToggle, useLockBodyScroll } from '../../hooks/useScrolled';
@@ -58,6 +58,28 @@ const Navbar: React.FC<NavbarProps> = memo(({ alwaysSolid = false }) => {
 
   const isSolid = alwaysSolid || scrolled;
 
+  const [activeSection, setActiveSection] = useState<string>('');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -80% 0px' }
+    );
+
+    NAV_LINKS.forEach(link => {
+      const el = document.getElementById(link.href.replace('#', ''));
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       {/* ── Main navbar ─────────────────────────────── */}
@@ -84,7 +106,7 @@ const Navbar: React.FC<NavbarProps> = memo(({ alwaysSolid = false }) => {
               <a
                 key={link.id}
                 href={link.href}
-                className="navbar__link"
+                className={`navbar__link ${activeSection === link.href ? 'navbar__link--active' : ''}`}
                 onClick={e => handleNavClick(e, link.href)}
               >
                 {link.label}
@@ -169,7 +191,7 @@ const Navbar: React.FC<NavbarProps> = memo(({ alwaysSolid = false }) => {
               <a
                 key={link.id}
                 href={link.href}
-                className="mobile-menu__link"
+                className={`mobile-menu__link ${activeSection === link.href ? 'mobile-menu__link--active' : ''}`}
                 onClick={e => handleNavClick(e, link.href)}
               >
                 {link.label}

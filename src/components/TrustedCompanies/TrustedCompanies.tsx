@@ -46,7 +46,12 @@ const TrustedCompanies: React.FC = memo(() => {
     not on every re-render. Saves GC pressure from array spread.
   */
   const loopItems = useMemo(
-    () => [...TRUSTED_COMPANIES, ...TRUSTED_COMPANIES],
+    () => [
+      ...TRUSTED_COMPANIES,
+      ...TRUSTED_COMPANIES,
+      ...TRUSTED_COMPANIES,
+      ...TRUSTED_COMPANIES
+    ],
     []
   );
 

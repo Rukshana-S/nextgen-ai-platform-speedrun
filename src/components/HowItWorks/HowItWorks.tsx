@@ -26,6 +26,8 @@ const Step: React.FC<StepProps> = memo(({ item }) => {
 });
 Step.displayName = 'Step';
 
+import Reveal from '../Reveal/Reveal';
+
 /* ================================================================
    HOW IT WORKS SECTION
    ================================================================ */
@@ -36,19 +38,23 @@ const HowItWorks: React.FC = memo(() => (
     aria-labelledby="hiw-heading"
   >
     <div className="container hiw__container">
-      <div className="hiw__header">
-        <div className="hiw__badge">How It Works</div>
-        <h2 id="hiw-heading" className="hiw__title">
-          From data chaos to clear decisions.
-        </h2>
-        <p className="hiw__subtitle">
-          Get started in minutes. Our guided onboarding connects your stack and starts surfacing insights immediately.
-        </p>
-      </div>
+      <Reveal direction="up">
+        <div className="hiw__header">
+          <div className="hiw__badge">How It Works</div>
+          <h2 id="hiw-heading" className="hiw__title">
+            From data chaos to clear decisions.
+          </h2>
+          <p className="hiw__subtitle">
+            Get started in minutes. Our guided onboarding connects your stack and starts surfacing insights immediately.
+          </p>
+        </div>
+      </Reveal>
 
       <ol className="hiw__steps" aria-label="How NexGen AI works — step by step">
-        {HOW_IT_WORKS_STEPS.map((item) => (
-          <Step key={item.id} item={item} />
+        {HOW_IT_WORKS_STEPS.map((item, index) => (
+          <Reveal key={item.id} delay={index * 150} direction="up">
+            <Step item={item} />
+          </Reveal>
         ))}
       </ol>
     </div>

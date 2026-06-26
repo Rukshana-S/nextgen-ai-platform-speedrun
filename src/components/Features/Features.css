@@ -291,15 +291,18 @@
     grid-column: span 2;
   }
 
-  /* Hover & Active Effects on Desktop */
+  /* Hover Effects on Desktop */
   .features__card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
     border-color: rgba(17, 76, 90, 0.3);
     z-index: 10;
   }
 
-
+  .features__card:hover .features__card-icon-wrap {
+    transform: scale(1.08) rotate(2deg);
+    box-shadow: var(--shadow-glow);
+  }
 
   /* Active card tracking */
   .features__card--active {

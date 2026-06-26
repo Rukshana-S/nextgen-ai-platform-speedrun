@@ -11,6 +11,10 @@ import LazySection from './components/LazySection';
    that the browser only downloads after the Hero has painted.
    This directly reduces initial JS parse/exec time → better TBT/FCP.
    ================================================================ */
+const RealTimeInsights = lazy(() =>
+  import('./components/RealTimeInsights')
+);
+
 const TrustedCompanies = lazy(() =>
   import('./components/TrustedCompanies')
 );
@@ -93,6 +97,12 @@ const App: React.FC = () => {
           LazySection ensures the chunk is not even requested until the section
           scrolls near the viewport. This radically improves mobile TBT and LCP.
         */}
+        <Suspense fallback={<SectionFallback />}>
+          <LazySection fallbackHeight="800px">
+            <RealTimeInsights />
+          </LazySection>
+        </Suspense>
+
         <Suspense fallback={<SectionFallback />}>
           <LazySection fallbackHeight="200px">
             <TrustedCompanies />

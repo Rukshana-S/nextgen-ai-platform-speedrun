@@ -54,8 +54,13 @@
   white-space: nowrap;
 }
 
-.btn:hover  { transform: translateY(-2px); }
-.btn:active { transform: translateY(0); }
+.btn svg {
+  transition: transform var(--transition-fast);
+}
+
+.btn:hover  { transform: translateY(-1px); }
+.btn:hover svg { transform: translateX(4px); }
+.btn:active { transform: translateY(0) scale(0.98); }
 
 .btn-primary {
   background: var(--color-teal);
@@ -65,7 +70,7 @@
 
 .btn-primary:hover {
   background: var(--color-navy);
-  box-shadow: 0 6px 20px rgba(17, 76, 90, 0.45);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
 .btn-outline {

@@ -98,12 +98,14 @@
   transition: transform var(--transition-base);
 }
 
-.navbar__link:hover {
+.navbar__link:hover,
+.navbar__link--active {
   color: var(--color-navy);
   background: rgba(17, 76, 90, 0.05);
 }
 
-.navbar__link:hover::after {
+.navbar__link:hover::after,
+.navbar__link--active::after {
   transform: translateX(-50%) scaleX(1);
 }
 
@@ -220,7 +222,8 @@
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
-.mobile-menu__link:hover {
+.mobile-menu__link:hover,
+.mobile-menu__link--active {
   background: var(--color-mint);
   color: var(--color-teal);
 }

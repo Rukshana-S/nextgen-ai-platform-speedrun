@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, memo } from 'react';
 import { PLANS } from '../../data/pricing';
 import { calculatePrice } from '../../utils/calculatePrice';
 import type { CurrencyCode } from '../../utils/calculatePrice';
 import { CheckIcon } from '../../assets/icons';
+import { useAnimatedCounter } from '../../hooks/useAnimatedCounter';
+import Reveal from '../Reveal/Reveal';
 import './Pricing.css';
 
 /* ── Chevron Down Icon for Dropdown ────────────────────────────── */
@@ -30,17 +32,23 @@ ChevronDownIcon.displayName = 'ChevronDownIcon';
 /* ── Memoized Static Pricing Card ──────────────────────────────── */
 interface PricingCardProps {
   plan: typeof PLANS[number];
-  priceRef: React.RefObject<HTMLSpanElement | null>;
-  periodRef: React.RefObject<HTMLSpanElement | null>;
-  savingsRef: React.RefObject<HTMLDivElement | null>;
+  billingPeriod: 'monthly' | 'annual';
+  currency: CurrencyCode;
 }
 
 const PricingCard: React.FC<PricingCardProps> = memo(({
   plan,
-  priceRef,
-  periodRef,
-  savingsRef,
+  billingPeriod,
+  currency
 }) => {
+  const { formattedPrice, formattedPeriod, savingsText } = calculatePrice(
+    plan.prices[currency],
+    billingPeriod,
+    currency
+  );
+
+  const animatedPrice = useAnimatedCounter(formattedPrice, 300, true);
+
   return (
     <article
       className={`pricing__card ${plan.recommended ? 'pricing__card--recommended' : ''}`}
@@ -57,22 +65,21 @@ const PricingCard: React.FC<PricingCardProps> = memo(({
         <p className="pricing__card-desc">{plan.description}</p>
         
         <div className="pricing__card-price-wrap">
-          <span ref={priceRef} className="pricing__price-val">
-            {/* Set via direct DOM updates */}
+          <span className="pricing__price-val">
+            {animatedPrice}
           </span>
-          <span ref={periodRef} className="pricing__price-period">
-            {/* Set via direct DOM updates */}
+          <span className="pricing__price-period">
+            {formattedPeriod}
           </span>
         </div>
 
         {/* Savings tag */}
         <div
-          ref={savingsRef}
           className="pricing__savings"
           aria-live="polite"
-          style={{ opacity: 0 }}
+          style={{ opacity: savingsText ? 1 : 0 }}
         >
-          {/* Set via direct DOM updates */}
+          {savingsText || 'No savings'}
         </div>
       </header>
 
@@ -111,60 +118,6 @@ const Pricing: React.FC = memo(() => {
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
   const [currency, setCurrency] = useState<CurrencyCode>('USD');
 
-  // Refs to avoid page or card re-renders when updating values
-  const priceRefs = useRef<Record<string, HTMLSpanElement | null>>({});
-  const periodRefs = useRef<Record<string, HTMLSpanElement | null>>({});
-  const savingsRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const timeoutsRef = useRef<number[]>([]);
-
-  // Function to apply direct DOM updates to price labels with animation
-  const updatePrices = (period: 'monthly' | 'annual', curr: CurrencyCode) => {
-    // Clear pending timeouts to avoid race conditions
-    timeoutsRef.current.forEach(t => clearTimeout(t));
-    timeoutsRef.current = [];
-
-    PLANS.forEach((plan) => {
-      const priceEl = priceRefs.current[plan.id];
-      const periodEl = periodRefs.current[plan.id];
-      const savingsEl = savingsRefs.current[plan.id];
-
-      if (!priceEl) return;
-
-      const { formattedPrice, formattedPeriod, savingsText } = calculatePrice(
-        plan.prices[curr],
-        period,
-        curr
-      );
-
-      // Trigger fade transition by adding class
-      priceEl.classList.add('price-updating');
-
-      // Update text contents mid-transition (after fade out)
-      const timeoutId = window.setTimeout(() => {
-        priceEl.textContent = formattedPrice;
-        if (periodEl) {
-          periodEl.textContent = formattedPeriod;
-        }
-        if (savingsEl) {
-          savingsEl.textContent = savingsText || '';
-          savingsEl.style.opacity = savingsText ? '1' : '0';
-        }
-        // Fade back in
-        priceEl.classList.remove('price-updating');
-      }, 150);
-
-      timeoutsRef.current.push(timeoutId);
-    });
-  };
-
-  // Perform initial paint on mount and update on toggles
-  useEffect(() => {
-    updatePrices(billingPeriod, currency);
-    return () => {
-      timeoutsRef.current.forEach(t => clearTimeout(t));
-    };
-  }, [billingPeriod, currency]);
-
   return (
     <section
       id="pricing"
@@ -173,92 +126,69 @@ const Pricing: React.FC = memo(() => {
     >
       <div className="container pricing__container">
         {/* Section Header */}
-        <div className="pricing__header">
-          <div className="pricing__badge">Pricing Plans</div>
-          <h2 id="pricing-section-heading" className="pricing__title">
-            Flexible pricing for any scale.
-          </h2>
-          <p className="pricing__subtitle">
-            Choose the plan that fits your analytics requirements. Switch currencies or billing cycles instantly.
-          </p>
-        </div>
+        <Reveal direction="up">
+          <div className="pricing__header">
+            <div className="pricing__badge">Pricing Plans</div>
+            <h2 id="pricing-section-heading" className="pricing__title">
+              Flexible pricing for any scale.
+            </h2>
+            <p className="pricing__subtitle">
+              Choose the plan that fits your analytics requirements. Switch currencies or billing cycles instantly.
+            </p>
+          </div>
+        </Reveal>
 
         {/* Controls */}
-        <div className="pricing__controls">
-          {/* Monthly / Annual Toggle Switch */}
-          <div className="pricing__toggle-wrap">
-            <button
-              className={`pricing__toggle-btn ${billingPeriod === 'monthly' ? 'pricing__toggle-btn--active' : ''}`}
-              onClick={() => setBillingPeriod('monthly')}
-              aria-pressed={billingPeriod === 'monthly'}
-            >
-              Monthly
-            </button>
-            <button
-              className={`pricing__toggle-btn ${billingPeriod === 'annual' ? 'pricing__toggle-btn--active' : ''}`}
-              onClick={() => setBillingPeriod('annual')}
-              aria-pressed={billingPeriod === 'annual'}
-            >
-              Annual
-            </button>
-          </div>
+        <Reveal direction="up" delay={150}>
+          <div className="pricing__controls">
+            {/* Monthly / Annual Toggle Switch */}
+            <div className="pricing__toggle-wrap">
+              <button
+                className={`pricing__toggle-btn ${billingPeriod === 'monthly' ? 'pricing__toggle-btn--active' : ''}`}
+                onClick={() => setBillingPeriod('monthly')}
+                aria-pressed={billingPeriod === 'monthly'}
+              >
+                Monthly
+              </button>
+              <button
+                className={`pricing__toggle-btn ${billingPeriod === 'annual' ? 'pricing__toggle-btn--active' : ''}`}
+                onClick={() => setBillingPeriod('annual')}
+                aria-pressed={billingPeriod === 'annual'}
+              >
+                Annual
+              </button>
+            </div>
 
-          {/* Currency Dropdown Selector */}
-          <div className="pricing__select-wrap">
-            <label htmlFor="pricing-currency" className="sr-only">
-              Select Currency
-            </label>
-            <select
-              id="pricing-currency"
-              className="pricing__select"
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
-            >
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="INR">INR (₹)</option>
-            </select>
-            <ChevronDownIcon className="pricing__select-icon" />
+            {/* Currency Dropdown Selector */}
+            <div className="pricing__select-wrap">
+              <label htmlFor="pricing-currency" className="sr-only">
+                Select Currency
+              </label>
+              <select
+                id="pricing-currency"
+                className="pricing__select"
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
+              >
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="INR">INR (₹)</option>
+              </select>
+              <ChevronDownIcon className="pricing__select-icon" />
+            </div>
           </div>
-        </div>
+        </Reveal>
 
-        {/* Cards Grid */}
         <div className="pricing__grid">
-          {PLANS.map((plan) => {
-            // Helper to assign refs dynamically
-            const priceRef = {
-              get current() {
-                return priceRefs.current[plan.id] || null;
-              },
-              set current(el) {
-                priceRefs.current[plan.id] = el;
-              }
-            };
-            const periodRef = {
-              get current() {
-                return periodRefs.current[plan.id] || null;
-              },
-              set current(el) {
-                periodRefs.current[plan.id] = el;
-              }
-            };
-            const savingsRef = {
-              get current() {
-                return savingsRefs.current[plan.id] || null;
-              },
-              set current(el) {
-                savingsRefs.current[plan.id] = el;
-              }
-            };
-
+          {PLANS.map((plan, index) => {
             return (
-              <PricingCard
-                key={plan.id}
-                plan={plan}
-                priceRef={priceRef}
-                periodRef={periodRef}
-                savingsRef={savingsRef}
-              />
+              <Reveal key={plan.id} delay={index * 150} direction="up">
+                <PricingCard
+                  plan={plan}
+                  billingPeriod={billingPeriod}
+                  currency={currency}
+                />
+              </Reveal>
             );
           })}
         </div>

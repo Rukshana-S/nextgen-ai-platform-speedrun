@@ -32,7 +32,7 @@ const FAQItem: React.FC<FAQItemProps> = memo(({ item, isOpen, onToggle }) => {
         role="region"
         aria-labelledby={`faq-trigger-${item.id}`}
         className="faq__panel"
-        hidden={!isOpen}
+        aria-hidden={!isOpen}
       >
         <div className="faq__panel-inner">
           <p className="faq__answer">{item.answer}</p>
@@ -42,6 +42,8 @@ const FAQItem: React.FC<FAQItemProps> = memo(({ item, isOpen, onToggle }) => {
   );
 });
 FAQItem.displayName = 'FAQItem';
+
+import Reveal from '../Reveal/Reveal';
 
 const FAQ: React.FC = memo(() => {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -53,21 +55,24 @@ const FAQ: React.FC = memo(() => {
   return (
     <section id="faq" className="faq" aria-labelledby="faq-heading">
       <div className="container faq__container">
-        <div className="faq__header">
-          <span className="faq__badge">Common Questions</span>
-          <h2 id="faq-heading" className="faq__title">
-            Everything you need to know.
-          </h2>
-        </div>
+        <Reveal direction="up">
+          <div className="faq__header">
+            <span className="faq__badge">Common Questions</span>
+            <h2 id="faq-heading" className="faq__title">
+              Everything you need to know.
+            </h2>
+          </div>
+        </Reveal>
 
         <div className="faq__list" role="list" aria-label="Frequently asked questions">
-          {FAQS.map((item) => (
-            <FAQItem
-              key={item.id}
-              item={item}
-              isOpen={openId === item.id}
-              onToggle={() => handleToggle(item.id)}
-            />
+          {FAQS.map((item, index) => (
+            <Reveal key={item.id} delay={index * 100} direction="up">
+              <FAQItem
+                item={item}
+                isOpen={openId === item.id}
+                onToggle={() => handleToggle(item.id)}
+              />
+            </Reveal>
           ))}
         </div>
       </div>

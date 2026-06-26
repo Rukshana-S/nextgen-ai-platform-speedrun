@@ -100,33 +100,57 @@
   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base), background var(--transition-base);
 }
 
-/* Glow blob per card */
+/* Glow blob per card (moved behind icon) */
 .stats__card::before {
   content: '';
   position: absolute;
-  top: -30px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, rgba(255, 200, 1, 0.12) 0%, transparent 70%);
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(255, 200, 1, 0.4) 0%, transparent 70%);
   pointer-events: none;
+  opacity: 0.5;
   transition: opacity var(--transition-slow);
+  filter: blur(10px);
+}
+
+/* Gradient border pseudo-element */
+.stats__card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 200, 1, 0.4), transparent, rgba(17, 76, 90, 0.8));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s 1.5s ease; /* wait for count to finish */
+}
+
+.stats__card.in-view::after {
+  opacity: 1;
 }
 
 .stats__card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 200, 1, 0.08);
-  border-color: rgba(255, 200, 1, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 200, 1, 0.15);
   background: rgba(17, 76, 90, 0.5);
 }
 
 .stats__card:hover::before {
-  opacity: 2;
+  opacity: 1;
 }
 
 /* Icon Container */
 .stats__card-icon {
+  position: relative;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -140,7 +164,14 @@
   transition: background var(--transition-base), transform var(--transition-base);
 }
 
+.stats__card.in-view .stats__card-icon {
+  animation: stat-icon-bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
 
+@keyframes stat-icon-bounce {
+  0% { transform: scale(0.5); }
+  100% { transform: scale(1); }
+}
 /* Animated counter value */
 .stats__card-value {
   display: block;

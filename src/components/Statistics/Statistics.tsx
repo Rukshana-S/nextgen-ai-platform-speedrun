@@ -3,7 +3,8 @@ import { STATISTICS } from '../../data/siteData';
 import * as Icons from '../../assets/icons';
 import './Statistics.css';
 
-/* ── Single Metric Card ─────────────────────────────────────────── */
+import { useAnimatedCounter } from '../../hooks/useAnimatedCounter';
+
 interface StatCardProps {
   item: typeof STATISTICS[number];
   index: number;
@@ -11,6 +12,8 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = memo(({ item, index }) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = React.useState(false);
+  const animatedValue = useAnimatedCounter(item.value, 1200, inView);
   const IconComponent = (Icons as Record<string, React.FC<{ size?: number }>>)[item.iconName] || Icons.SparkleIcon;
 
   useEffect(() => {
@@ -20,9 +23,9 @@ const StatCard: React.FC<StatCardProps> = memo(({ item, index }) => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Stagger animation by card index
           setTimeout(() => {
             card.classList.add('in-view');
+            setInView(true);
           }, index * 120);
           observer.unobserve(card);
         }
@@ -44,7 +47,7 @@ const StatCard: React.FC<StatCardProps> = memo(({ item, index }) => {
       <div className="stats__card-icon" aria-hidden="true">
         <IconComponent size={24} />
       </div>
-      <strong className="stats__card-value">{item.value}</strong>
+      <strong className="stats__card-value">{animatedValue}</strong>
       <span className="stats__card-label">{item.label}</span>
       <span className="stats__card-desc">{item.description}</span>
     </div>
