@@ -76,3 +76,93 @@ export const FEATURES = [
   }
 ] as const;
 
+export const STATISTICS = [
+  {
+    id: 'uptime',
+    iconName: 'ShieldIcon',
+    value: '99.99%',
+    label: 'Uptime SLA',
+    description: 'Guaranteed availability'
+  },
+  {
+    id: 'datapoints',
+    iconName: 'ChartBarIcon',
+    value: '5B+',
+    label: 'Data Points Processed',
+    description: 'Daily across all clients'
+  },
+  {
+    id: 'latency',
+    iconName: 'ZapIcon',
+    value: '<2ms',
+    label: 'Average Latency',
+    description: 'Edge inference response'
+  },
+  {
+    id: 'customers',
+    iconName: 'UsersIcon',
+    value: '12k+',
+    label: 'Active Customers',
+    description: 'Across 60+ countries'
+  }
+] as const;
+
+export const HOW_IT_WORKS_STEPS = [
+  {
+    id: 'connect',
+    step: '01',
+    title: 'Connect Your Data',
+    description: 'Integrate any data source in minutes — from databases and APIs to live event streams — with zero-code connectors.',
+    iconName: 'GlobeIcon'
+  },
+  {
+    id: 'analyze',
+    step: '02',
+    title: 'AI Analyzes & Learns',
+    description: 'Our ML engine automatically discovers patterns, trains custom models, and surfaces anomalies across your entire dataset.',
+    iconName: 'SparkleIcon'
+  },
+  {
+    id: 'insights',
+    step: '03',
+    title: 'Get Actionable Insights',
+    description: 'Receive clear predictive dashboards, real-time alerts, and narrative reports your entire team can act on immediately.',
+    iconName: 'TrendingUpIcon'
+  },
+  {
+    id: 'scale',
+    step: '04',
+    title: 'Scale Effortlessly',
+    description: 'As your business grows, NexGen AI scales automatically — from startup to enterprise without re-architecting your stack.',
+    iconName: 'ArrowRightIcon'
+  }
+] as const;
+
+export const TESTIMONIALS = [
+  {
+    id: 'testimonial-1',
+    quote: "NexGen AI transformed how we handle data. What used to take our analysts a week now surfaces automatically in real time. It's like having a world-class data science team built in.",
+    name: 'Sarah Chen',
+    role: 'VP of Engineering',
+    company: 'Vercel',
+    initials: 'SC'
+  },
+  {
+    id: 'testimonial-2',
+    quote: 'The predictive accuracy is outstanding. We reduced churn by 34% in the first quarter by acting on the early-warning signals NexGen AI delivered before they became visible in traditional reporting.',
+    name: 'Marcus Reid',
+    role: 'Head of Growth',
+    company: 'Stripe',
+    initials: 'MR'
+  },
+  {
+    id: 'testimonial-3',
+    quote: 'Our compliance team finally sleeps at night. The automated governance layer handles audit trails, data residency, and access controls without any manual overhead from our side.',
+    name: 'Priya Nair',
+    role: 'Chief Data Officer',
+    company: 'PlanetScale',
+    initials: 'PN'
+  }
+] as const;
+
+

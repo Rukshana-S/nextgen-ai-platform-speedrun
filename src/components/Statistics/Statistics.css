@@ -1,0 +1,194 @@
+/* ================================================================
+   STATISTICS SECTION
+   ================================================================ */
+
+.stats {
+  padding-block: var(--space-20) var(--space-24);
+  background: var(--color-navy);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background grid */
+.stats::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(17, 76, 90, 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 76, 90, 0.4) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* Radial fade top & bottom so grid fades at edges */
+.stats::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, var(--color-navy) 100%);
+  pointer-events: none;
+}
+
+.stats__container {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Section Header ──────────────────────────── */
+.stats__header {
+  text-align: center;
+  max-width: 600px;
+  margin-inline: auto;
+  margin-bottom: var(--space-16);
+}
+
+.stats__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  background: rgba(17, 76, 90, 0.6);
+  border: 1px solid rgba(255, 200, 1, 0.3);
+  border-radius: var(--radius-full);
+  color: var(--color-yellow);
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.stats__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-white);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-4);
+}
+
+.stats__subtitle {
+  font-size: var(--text-lg);
+  color: rgba(241, 246, 244, 0.65);
+  line-height: var(--lh-relaxed);
+}
+
+/* ── Cards Grid ──────────────────────────────── */
+.stats__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .stats__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Metric Card */
+.stats__card {
+  position: relative;
+  background: rgba(17, 76, 90, 0.35);
+  border: 1px solid rgba(17, 76, 90, 0.6);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  text-align: center;
+  overflow: hidden;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base), background var(--transition-base);
+}
+
+/* Glow blob per card */
+.stats__card::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255, 200, 1, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  transition: opacity var(--transition-slow);
+}
+
+.stats__card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 200, 1, 0.08);
+  border-color: rgba(255, 200, 1, 0.3);
+  background: rgba(17, 76, 90, 0.5);
+}
+
+.stats__card:hover::before {
+  opacity: 2;
+}
+
+/* Icon Container */
+.stats__card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 200, 1, 0.12);
+  border: 1px solid rgba(255, 200, 1, 0.25);
+  border-radius: var(--radius-lg);
+  color: var(--color-yellow);
+  margin: 0 auto var(--space-5);
+  transition: background var(--transition-base), transform var(--transition-base);
+}
+
+.stats__card:hover .stats__card-icon {
+  background: rgba(255, 200, 1, 0.2);
+  transform: scale(1.08);
+}
+
+/* Animated counter value */
+.stats__card-value {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-yellow);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2);
+
+  /* Initial state — animates in when in view */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-slower), transform var(--transition-slower);
+}
+
+.stats__card.in-view .stats__card-value {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stats__card-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-white);
+  margin-bottom: var(--space-1);
+  letter-spacing: 0.01em;
+}
+
+.stats__card-desc {
+  display: block;
+  font-size: var(--text-xs);
+  color: rgba(241, 246, 244, 0.5);
+}
+
+@media (max-width: 424px) {
+  .stats__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats__title {
+    font-size: var(--text-3xl);
+  }
+}
