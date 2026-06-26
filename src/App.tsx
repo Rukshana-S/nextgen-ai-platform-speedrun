@@ -18,6 +18,10 @@ const Footer = lazy(() =>
   import('./components/Footer')
 );
 
+const Features = lazy(() =>
+  import('./components/Features')
+);
+
 /* ── Suspense fallback — invisible, zero-height placeholder ──── */
 const SectionFallback = memo(() => (
   <div aria-hidden="true" style={{ minHeight: '1px' }} />
@@ -68,21 +72,9 @@ const App: React.FC = () => {
           <TrustedCompanies />
         </Suspense>
 
-        {/* Placeholder section anchors for nav scroll targets */}
-        <section
-          id="features"
-          style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          aria-label="Features section — coming soon"
-        >
-          <div style={{ textAlign: 'center', opacity: 0.35 }}>
-            <p style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-lg)', color: 'var(--color-teal)' }}>
-              Features · Pricing · About · Contact
-            </p>
-            <p style={{ marginTop: '8px', fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>
-              Sections coming soon
-            </p>
-          </div>
-        </section>
+        <Suspense fallback={<SectionFallback />}>
+          <Features />
+        </Suspense>
       </main>
 
       <Suspense fallback={<SectionFallback />}>

@@ -30,3 +30,49 @@ export const SITE_META = {
   image:       'https://nexgenai.app/og-image.png',
   twitterHandle: '@nexgenai',
 } as const;
+
+export const FEATURES = [
+  {
+    id: 'analytics',
+    iconName: 'TrendingUpIcon',
+    title: 'Intelligent Analytics',
+    description: 'Leverage predictive machine learning models to forecast market trends and user behavior before they happen.',
+    gridClass: 'features__card--wide-1'
+  },
+  {
+    id: 'security',
+    iconName: 'ShieldIcon',
+    title: 'Enterprise Security',
+    description: 'Rest easy with end-to-end encryption, multi-tenant isolation, and continuous compliance monitoring.',
+    gridClass: 'features__card--tall'
+  },
+  {
+    id: 'performance',
+    iconName: 'ZapIcon',
+    title: 'Real-Time Pipeline',
+    description: 'Process millions of events per second with sub-millisecond latency for live streaming dashboards.',
+    gridClass: 'features__card--normal-1'
+  },
+  {
+    id: 'scale',
+    iconName: 'GlobeIcon',
+    title: 'Global Edge Scale',
+    description: 'Deploy intelligence closer to users with edge-optimized inference pipelines spanning 30+ regions.',
+    gridClass: 'features__card--normal-2'
+  },
+  {
+    id: 'collaboration',
+    iconName: 'UsersIcon',
+    title: 'Team Collaboration',
+    description: 'Share insights, leave interactive annotations, and build custom dashboards collaboratively in real time.',
+    gridClass: 'features__card--normal-3'
+  },
+  {
+    id: 'bi-reporting',
+    iconName: 'ChartBarIcon',
+    title: 'Interactive Reports',
+    description: 'Generate publication-ready BI reporting metrics and visualisations automatically with natural language prompts.',
+    gridClass: 'features__card--wide-2'
+  }
+] as const;
+
