@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, memo } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import LazySection from './components/LazySection';
 
 /* ================================================================
    LAZY-LOADED BELOW-THE-FOLD COMPONENTS
@@ -88,45 +89,63 @@ const App: React.FC = () => {
         <Hero />
 
         {/*
-          Below-fold sections: deferred via React.lazy().
-          Suspense boundary means React won't block the Hero
-          paint while the chunk downloads.
+          Below-fold sections: deferred via React.lazy() and IntersectionObserver.
+          LazySection ensures the chunk is not even requested until the section
+          scrolls near the viewport. This radically improves mobile TBT and LCP.
         */}
         <Suspense fallback={<SectionFallback />}>
-          <TrustedCompanies />
+          <LazySection fallbackHeight="200px">
+            <TrustedCompanies />
+          </LazySection>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <Features />
+          <LazySection fallbackHeight="800px">
+            <Features />
+          </LazySection>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <Pricing />
+          <LazySection fallbackHeight="800px">
+            <Pricing />
+          </LazySection>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <Statistics />
+          <LazySection fallbackHeight="400px">
+            <Statistics />
+          </LazySection>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <HowItWorks />
+          <LazySection fallbackHeight="600px">
+            <HowItWorks />
+          </LazySection>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <Testimonials />
+          <LazySection fallbackHeight="500px">
+            <Testimonials />
+          </LazySection>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <FAQ />
+          <LazySection fallbackHeight="600px">
+            <FAQ />
+          </LazySection>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <CTA />
+          <LazySection fallbackHeight="400px">
+            <CTA />
+          </LazySection>
         </Suspense>
       </main>
 
       <Suspense fallback={<SectionFallback />}>
-        <Footer />
+        <LazySection fallbackHeight="300px">
+          <Footer />
+        </LazySection>
       </Suspense>
     </>
   );

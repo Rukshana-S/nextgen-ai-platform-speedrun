@@ -140,10 +140,6 @@
   transition: background var(--transition-base), transform var(--transition-base);
 }
 
-.stats__card:hover .stats__card-icon {
-  background: rgba(255, 200, 1, 0.2);
-  transform: scale(1.08);
-}
 
 /* Animated counter value */
 .stats__card-value {

@@ -93,8 +93,9 @@
   background: rgba(255, 255, 255, 0.65);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+  transform: translateZ(0); /* Hardware acceleration to prevent Safari clipping */
+  z-index: 1;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base), z-index 0s;
   cursor: pointer;
   outline: none;
 }
@@ -206,12 +207,6 @@
   color: var(--color-teal);
 }
 
-.features__card--active .features__card-icon-wrap {
-  background: var(--color-teal);
-  color: var(--color-white);
-  transform: scale(1.05);
-}
-
 .features__card--active .features__card-border {
   opacity: 1;
   background: linear-gradient(135deg, var(--color-teal), var(--color-orange), var(--color-yellow));
@@ -301,12 +296,10 @@
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
     border-color: rgba(17, 76, 90, 0.3);
+    z-index: 10;
   }
 
-  .features__card:hover .features__card-icon-wrap {
-    background: var(--color-teal);
-    color: var(--color-white);
-  }
+
 
   /* Active card tracking */
   .features__card--active {

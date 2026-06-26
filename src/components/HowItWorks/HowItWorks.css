@@ -6,7 +6,6 @@
   padding-block: var(--space-20) var(--space-24);
   background: var(--color-white);
   position: relative;
-  overflow: hidden;
 }
 
 /* soft mint top band */
@@ -90,6 +89,12 @@
   gap: var(--space-6);
   position: relative;
   padding-bottom: var(--space-12);
+  z-index: 1;
+  transition: z-index 0s;
+}
+
+.hiw__step:hover {
+  z-index: 10;
 }
 
 .hiw__step:last-child {
@@ -110,13 +115,8 @@
   color: var(--color-white);
   z-index: 2;
   box-shadow: 0 0 0 4px var(--color-white), var(--shadow-md);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
-.hiw__step:hover .hiw__step-icon {
-  transform: scale(1.1);
-  box-shadow: 0 0 0 4px var(--color-white), var(--shadow-lg), 0 0 20px rgba(17, 76, 90, 0.3);
-}
 
 /* Step number badge in corner */
 .hiw__step-num {

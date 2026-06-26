@@ -118,12 +118,8 @@
   color: rgba(17, 76, 90, 0.07);
   user-select: none;
   pointer-events: none;
-  transition: color var(--transition-base);
 }
 
-.testimonials__card:hover .testimonials__quote-mark {
-  color: rgba(17, 76, 90, 0.12);
-}
 
 /* Stars */
 .testimonials__stars {

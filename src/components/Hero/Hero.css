@@ -184,7 +184,6 @@
   letter-spacing: -0.03em;
   color: var(--color-navy);
   animation: hero-fade-up 0.7s 0.1s ease both;
-  will-change: opacity, transform;
 }
 
 .hero__heading-accent {
