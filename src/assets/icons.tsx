@@ -236,3 +236,19 @@ export const ChartBarIcon: React.FC<IconProps> = ({ className = '', size = 20, c
     <rect x="14" y="3" width="4" height="15" rx="1" stroke={color} strokeWidth="1.5" />
   </svg>
 );
+
+/* ── Chevron Down ──────────────────────────────────────────────── */
+export const ChevronDownIcon: React.FC<IconProps> = ({ className = '', size = 20, color = 'currentColor' }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    aria-hidden="true"
+  >
+    <path d="M6 9L12 15L18 9" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+

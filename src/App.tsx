@@ -38,6 +38,14 @@ const Testimonials = lazy(() =>
   import('./components/Testimonials')
 );
 
+const FAQ = lazy(() =>
+  import('./components/FAQ')
+);
+
+const CTA = lazy(() =>
+  import('./components/CTA')
+);
+
 /* ── Suspense fallback — invisible, zero-height placeholder ──── */
 const SectionFallback = memo(() => (
   <div aria-hidden="true" style={{ minHeight: '1px' }} />
@@ -106,6 +114,14 @@ const App: React.FC = () => {
 
         <Suspense fallback={<SectionFallback />}>
           <Testimonials />
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <FAQ />
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <CTA />
         </Suspense>
       </main>
 

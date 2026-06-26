@@ -1,0 +1,137 @@
+/* ================================================================
+   FAQ SECTION
+   ================================================================ */
+
+.faq {
+  padding-block: var(--space-20) var(--space-24);
+  background: var(--color-white);
+  position: relative;
+  overflow: hidden;
+}
+
+.faq__container {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+/* ── Section Header ──────────────────────────── */
+.faq__header {
+  text-align: center;
+  margin-bottom: var(--space-16);
+}
+
+.faq__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  background: rgba(17, 76, 90, 0.05);
+  border: 1px solid rgba(17, 76, 90, 0.1);
+  border-radius: var(--radius-full);
+  color: var(--color-teal);
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.faq__title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: var(--fw-bold);
+  color: var(--color-navy);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-4);
+}
+
+/* ── Accordion List ──────────────────────────── */
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.faq__item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  overflow: hidden;
+  transition: box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.faq__item:hover {
+  border-color: rgba(17, 76, 90, 0.2);
+}
+
+.faq__item:focus-within {
+  box-shadow: 0 0 0 3px rgba(17, 76, 90, 0.2);
+  border-color: var(--color-teal);
+}
+
+.faq__item.is-open {
+  background: var(--color-mint);
+  border-color: rgba(17, 76, 90, 0.1);
+}
+
+/* ── Accordion Trigger (Button) ─────────────── */
+.faq__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+  background: none;
+  border: none;
+  color: var(--color-navy);
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  font-weight: var(--fw-semibold);
+  text-align: left;
+  cursor: pointer;
+  outline: none; /* Focus handled by focus-within on container */
+  transition: color var(--transition-base);
+}
+
+.faq__trigger:hover {
+  color: var(--color-teal);
+}
+
+.faq__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-teal);
+  transition: transform var(--transition-base);
+}
+
+.faq__item.is-open .faq__icon {
+  transform: rotate(180deg);
+}
+
+/* ── Accordion Panel (Content) ──────────────── */
+.faq__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--transition-base);
+}
+
+.faq__item.is-open .faq__panel {
+  grid-template-rows: 1fr;
+}
+
+.faq__panel-inner {
+  overflow: hidden;
+}
+
+.faq__answer {
+  padding: 0 var(--space-6) var(--space-5);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  line-height: var(--lh-relaxed);
+}

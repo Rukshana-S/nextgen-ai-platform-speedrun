@@ -165,4 +165,33 @@ export const TESTIMONIALS = [
   }
 ] as const;
 
+export const FAQS = [
+  {
+    id: 'faq-1',
+    question: 'How quickly can I integrate NexGen AI with my existing stack?',
+    answer: 'Integration takes minutes, not months. We provide zero-code connectors for most major databases (Postgres, MySQL, MongoDB) and data warehouses (Snowflake, BigQuery). For custom applications, our REST and GraphQL APIs can be fully integrated within a few hours.'
+  },
+  {
+    id: 'faq-2',
+    question: 'Is my data secure and private?',
+    answer: 'Absolutely. We employ end-to-end encryption for data both in transit and at rest. Every customer receives a fully isolated single-tenant environment. We are SOC2 Type II, GDPR, and HIPAA compliant.'
+  },
+  {
+    id: 'faq-3',
+    question: 'Do I need a data science team to use this platform?',
+    answer: 'No. NexGen AI is designed to democratize machine learning. Our auto-ML engine handles feature engineering, model training, and deployment behind the scenes. Your team can focus entirely on acting on the insights generated.'
+  },
+  {
+    id: 'faq-4',
+    question: 'What kind of latency can I expect for real-time inference?',
+    answer: 'Our globally distributed edge network processes events with an average latency of under 2ms. This allows you to build truly real-time responsive applications like fraud detection and dynamic pricing without noticeable delay.'
+  },
+  {
+    id: 'faq-5',
+    question: 'How does the pricing scale as my traffic grows?',
+    answer: 'We charge based on events processed, with generous volume discounts built in. You only pay for what you use, and you can set hard caps to ensure you never exceed your budget. Enterprise plans include unlimited seats.'
+  }
+] as const;
+
+
 
