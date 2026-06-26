@@ -22,6 +22,10 @@ const Features = lazy(() =>
   import('./components/Features')
 );
 
+const Pricing = lazy(() =>
+  import('./components/Pricing')
+);
+
 /* ── Suspense fallback — invisible, zero-height placeholder ──── */
 const SectionFallback = memo(() => (
   <div aria-hidden="true" style={{ minHeight: '1px' }} />
@@ -74,6 +78,10 @@ const App: React.FC = () => {
 
         <Suspense fallback={<SectionFallback />}>
           <Features />
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <Pricing />
         </Suspense>
       </main>
 
